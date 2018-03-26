@@ -109,7 +109,8 @@ void modbus_pdu_process(uint8_t *pdata, uint8_t length)
 void modbus_task()
 {
     if(rcv_complete){
-        rcv_complete = 0;
+        
         modbus_pdu_process(uart_rcv_buff,uart_rcv_index);
+        rcv_complete = 0;
     }
 }

@@ -149,16 +149,19 @@ void para_task()
 {
     uint8_t changed = 0;
     if(MB_HoldReg[1]!=com_brate){
+        com_brate = MB_HoldReg[1];
         FLASH_Unlock(FLASH_MEMTYPE_DATA);   
         FLASH_ProgramByte(EEP_BRATE,com_brate);
         changed = 1;
     }
     if(MB_HoldReg[2] != com_parity){
+        com_parity = MB_HoldReg[2];
         FLASH_Unlock(FLASH_MEMTYPE_DATA);   
         FLASH_ProgramByte(EEP_PARITY,com_parity);
         changed = 1;
     }
     if(MB_HoldReg[3] != com_stop){
+        com_stop = MB_HoldReg[3];
         FLASH_Unlock(FLASH_MEMTYPE_DATA);   
         FLASH_ProgramByte(EEP_STOP,com_stop);
         changed = 1;
