@@ -78,8 +78,8 @@ void MB_DRIVER_SendData(MB_FRAME* pframe)
     }
     length = index;                                 //需要校验的字节总长度
     crc_result = CRC16(buffer, length);             //计算校验字
-    buffer[index++] = *((uint8_t*)&(crc_result) + 1); //校验高字节 
-    buffer[index++] = *((uint8_t*)&crc_result);       //校验低字节  
+    buffer[index++] =  *((uint8_t*)&crc_result);//校验高字节 
+    buffer[index++] = *((uint8_t*)&(crc_result) + 1);       //校验低字节  
     length = index;                                 //需要发送的字节总长度
 
 #ifdef  _MB_ASCII                                   //如果为ASCII模式
@@ -112,11 +112,11 @@ void MB_DRIVER_ReadCoils(MB_FRAME *pframe)
     uint16_t quantity;
 	
     p = (uint8_t *)&start_addr;       //线圈首地址   
-    *p = (*pframe).Data[1];
-    *(p + 1) = (*pframe).Data[0];
+    *p = (*pframe).Data[0];
+    *(p + 1) = (*pframe).Data[1];
     p = (uint8_t *)&quantity;         //线圈数量    
-    *p = (*pframe).Data[3];
-    *(p + 1) = (*pframe).Data[2];
+    *p = (*pframe).Data[2];
+    *(p + 1) = (*pframe).Data[3];
 		
     reply_frame.ComPort = (*pframe).ComPort;
     reply_frame.Address = mb_local_address;
@@ -204,11 +204,11 @@ void MB_DRIVER_ReadDisIn(MB_FRAME *pframe)
     uint16_t quantity;
 	
     p = (uint8_t *)&start_addr;       //离散量输入首地址   
-    *p = (*pframe).Data[1];
-    *(p + 1) = (*pframe).Data[0];
+    *p = (*pframe).Data[0];
+    *(p + 1) = (*pframe).Data[1];
     p = (uint8_t *)&quantity;         //离散量输入数量    
-    *p = (*pframe).Data[3];
-    *(p + 1) = (*pframe).Data[2];
+    *p = (*pframe).Data[2];
+    *(p + 1) = (*pframe).Data[3];
 		
     reply_frame.ComPort = (*pframe).ComPort;
     reply_frame.Address = mb_local_address;
@@ -297,11 +297,11 @@ void MB_DRIVER_ReadHoldReg(MB_FRAME *pframe)
     uint16_t reg_data; 
        
     p = (uint8_t *)&start_addr;       //保持寄存器首地址   
-    *p = (*pframe).Data[1];
-    *(p + 1) = (*pframe).Data[0];
+    *p = (*pframe).Data[0];
+    *(p + 1) = (*pframe).Data[1];
     p = (uint8_t *)&quantity;         //保持寄存器数量    
-    *p = (*pframe).Data[3];
-    *(p + 1) = (*pframe).Data[2];
+    *p = (*pframe).Data[2];
+    *(p + 1) = (*pframe).Data[3];
 		
     reply_frame.ComPort = (*pframe).ComPort;
     reply_frame.Address = mb_local_address;
@@ -319,8 +319,8 @@ void MB_DRIVER_ReadHoldReg(MB_FRAME *pframe)
             for (i = 0; i < quantity; i++)
             {
                 reg_data = MB_HoldReg[i + start_addr];     //保持寄存器的整型数值  
-                reply_frame.Data[index++] = *(p+1);        //高字节  
-                reply_frame.Data[index++] = *p;            //低字节  
+                reply_frame.Data[index++] = *p;        //高字节  
+                reply_frame.Data[index++] = *(p+1);            //低字节  
             }
         }
         else
@@ -426,11 +426,11 @@ void MB_DRIVER_WriteSingleCoil(MB_FRAME *pframe)
     uint8_t  *p;
 	
     p = (uint8_t *)&target_addr;
-    *p = (*pframe).Data[1];
-    *(p + 1) = (*pframe).Data[0];
+    *p = (*pframe).Data[0];
+    *(p + 1) = (*pframe).Data[1];
     p = (uint8_t *)&write_value;
-    *p = (*pframe).Data[3];
-    *(p + 1) = (*pframe).Data[2];
+    *p = (*pframe).Data[2];
+    *(p + 1) = (*pframe).Data[3];
 	
     reply_frame.ComPort = (*pframe).ComPort;
     reply_frame.Address = mb_local_address;
@@ -483,11 +483,11 @@ void MB_DRIVER_WriteSingleHoldReg(MB_FRAME *pframe)
     uint8_t  *p;
 	
     p = (uint8_t *)&target_addr;
-    *p = (*pframe).Data[1];
-    *(p + 1) = (*pframe).Data[0];
+    *p = (*pframe).Data[0];
+    *(p + 1) = (*pframe).Data[1];
     p = (uint8_t *)&write_value;
-    *p = (*pframe).Data[3];
-    *(p + 1) = (*pframe).Data[2];
+    *p = (*pframe).Data[2];
+    *(p + 1) = (*pframe).Data[3];
 	
     reply_frame.ComPort = (*pframe).ComPort;
     reply_frame.Address = mb_local_address;
@@ -617,11 +617,11 @@ void MB_DRIVER_WriteMoreCoils(MB_FRAME *pframe)
     uint8_t  temp1, temp2, temp3;
        
     p = (uint8_t *)&start_addr;       //线圈首地址   
-    *p = (*pframe).Data[1];
-    *(p + 1) = (*pframe).Data[0];
+    *p = (*pframe).Data[0];
+    *(p + 1) = (*pframe).Data[1];
     p = (uint8_t *)&quantity;         //输出数量    
-    *p = (*pframe).Data[3];
-    *(p + 1) = (*pframe).Data[2];
+    *p = (*pframe).Data[2];
+    *(p + 1) = (*pframe).Data[3];
     byte_num = (*pframe).Data[4];   //字节计数
 		
 		
@@ -692,11 +692,11 @@ void MB_DRIVER_WriteMoreReg(MB_FRAME *pframe)
     uint8_t  byte_num;      //字节计数
        
     p = (uint8_t *)&start_addr;       //寄存器首地址   
-    *p = (*pframe).Data[1];
-    *(p + 1) = (*pframe).Data[0];
+    *p = (*pframe).Data[0];
+    *(p + 1) = (*pframe).Data[1];
     p = (uint8_t *)&quantity;         //寄存器数量    
-    *p = (*pframe).Data[3];
-    *(p + 1) = (*pframe).Data[2];
+    *p = (*pframe).Data[2];
+    *(p + 1) = (*pframe).Data[3];
     byte_num = (*pframe).Data[4];   //字节计数
 		
 		
@@ -718,8 +718,8 @@ void MB_DRIVER_WriteMoreReg(MB_FRAME *pframe)
             for (i = 0; i < quantity; i++)                //写多个寄存器的值 
             {
                 p = (uint8_t *)&MB_HoldReg[i + start_addr];            
-                *(p + 1) = (*pframe).Data[2*i + 5];
-                *p = (*pframe).Data[2*i + 6]; 
+                *p = (*pframe).Data[2*i + 5];
+                *(p + 1) = (*pframe).Data[2*i + 6]; 
             }
         }
         else

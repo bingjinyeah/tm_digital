@@ -4,6 +4,9 @@
 #include "led.h"
 #include "rs485.h"
 #include "para.h"
+#include "timer2.h"
+
+static uint16_t time_counts = 0;
 
 void clk_init(void)
 {
@@ -34,13 +37,17 @@ void main(void)
 	led_init();
     io_init();
     rs485_init();
-    
-	wdt_enable();
+    timer2_init();
+	//wdt_enable();
 	
 	enableInterrupts();
 	while (1){
-		IWDG_ReloadCounter();
-        led_run_blink();
+		//IWDG_ReloadCounter();
+        if(time_counts++==10000){
+            time_counts = 0;
+            led_run_blink();
+        }
+        
 		io_task();
         modbus_task();
         para_task();
